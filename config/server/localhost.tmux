@@ -1,0 +1,11 @@
+SESSION='localhost'
+WINDOWS='
+timothylee@localhost/king
+localhost/slave
+localhost/slave
+localhost/slave
+localhost/slave
+localhost/slave
+localhost/slave
+localhost/slave'
+COLOR=''
