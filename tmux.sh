@@ -15,10 +15,10 @@ CONFIG_SERVER=$CONFIG_BASE/server
 function check_config() {
     case $1 in
         local)
-            CONFIG="$CONFIG_LOCAL/$2.tmux"
+            CONFIG="$CONFIG_LOCAL/$CONFIG"
             ;;
         server)
-            CONFIG="$CONFIG_SERVER/$2.tmux"
+            CONFIG="$CONFIG_SERVER/$CONFIG"
             ;;
             *)
             CONFIG=""
@@ -39,6 +39,34 @@ function check_config() {
         echo "Error, no such config!"
         exit 1
     fi
+}
+
+function select_config() {
+    case $1 in
+        local)
+            CONFIG_DIR="$CONFIG_LOCAL"
+            ;;
+        server)
+            CONFIG_DIR="$CONFIG_SERVER"
+            ;;
+        *)
+            CONFIG_DIR=""
+            ;;
+    esac
+    if [[ ! -d $CONFIG_DIR ]]; then
+        echo "Error, no such type of config!"
+        exit 1
+    fi
+    configs=$(ls $CONFIG_DIR)
+    configs=($configs)
+    i=0
+    echo "Available configs:"
+    for config in ${configs[@]}; do
+        echo "$i) $(echo ${configs["$i"]} | sed 's/\.tmux$//g')"
+        i=$(($i+1))
+    done
+    read -p "Which config to use? (default:0)" selected
+    CONFIG=${configs["$selected"]}
 }
 
 function init_session() {
@@ -140,6 +168,7 @@ function enter() {
 
 case $1 in
     local)
+        select_config local
         check_config local $2
         init_session
         init_windows local
@@ -147,6 +176,7 @@ case $1 in
         enter
         ;;
     server)
+        select_config server
         check_config server $2
         init_session
         init_windows server
@@ -154,7 +184,7 @@ case $1 in
         enter
         ;;
         *)
-        echo "Useage: $0 {local|server}"
+        echo "Useage: $0 {local|server}" 
         ;;
 esac
 
