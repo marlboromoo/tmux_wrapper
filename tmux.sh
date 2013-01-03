@@ -11,6 +11,7 @@
 CONFIG_BASE=./config
 CONFIG_LOCAL=$CONFIG_BASE/local
 CONFIG_SERVER=$CONFIG_BASE/server
+CONFIG_TMUX=$CONFIG_BASE/.tmux.conf
 
 function check_config() {
     case $1 in
@@ -71,7 +72,7 @@ function select_config() {
 
 function init_session() {
     SESSION=$SESSION'_'$(date +"%s")_"$RANDOM"
-    tmux new-session -d -s "$SESSION"
+    tmux -f $CONFIG_TMUX new-session -d -s "$SESSION"
 }
 
 function strip_cmd() {
