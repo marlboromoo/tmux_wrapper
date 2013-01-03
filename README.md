@@ -12,7 +12,7 @@ There are two type of configurations, the syntax listed below. You can find the 
     WINDOWS="
     cmd1/window1_name
     'cmd2 -option'/window2_name
-    'cmd3'/window3_name"
+    'cmd3 arg'/window3_name"
     COLOR='color'
 
 ### Server
